@@ -54,7 +54,8 @@
       position: relative;
       width: 100%;
       height: 100%;
-      transform: translateY(-3px); /* account for the height of the clock hands */
+      /* account for the height of the clock hands and start them at the top */
+      transform: translateY(-3px) rotate(90deg);
     }
 
     .hand {
@@ -63,13 +64,51 @@
       background: black;
       position: absolute;
       top: 50%;
+      transform-origin: 100%;
+    }
+
+    .hour-hand {
+      width: 40%;
+      left: 10%; 
+    }
+
+    .second-hand {
+      height: 2px;
+      background: white;
+
     }
 
   </style>
 
   <script>
+    function setDate() {
+      const now = new Date();
+      setHours(now);
+      setMins(now);
+      setSeconds(now);
+    }
 
+    function setHours(now) {
+      const hourHand = document.querySelector(".hour-hand");
+      // degrees = (hours / 12) * 360 simplified to hours * 30
+      // add mins / 2 to make hour hand move gradually towards next hour
+      hourHand.style.transform = `rotate(${now.getHours() * 30 + now.getMinutes() / 2}deg)`;
+    }
 
+    function setMins(now) {
+      const minHand = document.querySelector(".min-hand");
+      // degrees = (mins / 60) * 360 simplified to mins * 6
+      minHand.style.transform = `rotate(${now.getMinutes() * 6}deg)`;
+    }
+
+    function setSeconds(now) {
+      const secondHand = document.querySelector(".second-hand");
+      // degrees = (seconds / 60) * 360 simplified to seconds * 6
+      secondHand.style.transform = `rotate(${now.getSeconds() * 6}deg)`;
+    }
+
+    // run setDate every second
+    setInterval(setDate, 1000);
   </script>
 </body>
 </html>
